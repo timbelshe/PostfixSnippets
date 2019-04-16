@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Completion;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace PostfixSnippets
 {
-    public abstract class BasePostfixSnippet
+    public abstract class BasePostfixSnippet : CSharpSyntaxRewriter
     {
         public string DisplayText;
         public string Name;

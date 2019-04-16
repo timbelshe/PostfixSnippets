@@ -8,6 +8,10 @@ using System.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+using System.Diagnostics;
+
+[assembly: InternalsVisibleTo("PostfixSnippets.Tests")]
 
 namespace PostfixSnippets
 {
@@ -26,6 +30,9 @@ namespace PostfixSnippets
 
         public override bool ShouldTriggerCompletion(SourceText text, int caretPosition, CompletionTrigger trigger, OptionSet options)
         {
+            Debug.WriteLine($"ShouldTriggerCompletion text: {text}");
+            Debug.WriteLine($"caretPosition: {caretPosition}");
+
             switch (trigger.Kind)
             {
                 case CompletionTriggerKind.Insertion:
@@ -54,6 +61,8 @@ namespace PostfixSnippets
 
         public async override Task ProvideCompletionsAsync(CompletionContext context)
         {
+            Debug.WriteLine($"ProvideCompletionsAsync context: {await context.Document.GetTextAsync()}");
+
             context.AddItems(Snippets.Select(async s => await s.GetCompletionItemAsync(context).ConfigureAwait(false))
                 .Select(t => t.Result)
                 .Where(r => !(r is null)));
